@@ -1,0 +1,17 @@
+*{
+    margin:0px;
+    padding:0px;
+}
+
+nav{
+    height: 40px;
+    padding: 10px;
+    border-bottom:2px solid rgb(234,234,234);
+    box-shadow: 1px 1px solid grey;
+}
+.nav_img_container img{
+    width: 150px;
+}
+
+
+
