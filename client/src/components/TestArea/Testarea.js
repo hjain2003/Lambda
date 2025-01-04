@@ -4,39 +4,92 @@ import "./Testarea.css";
 const Testarea = ({ jobId, onClose }) => {
   const [job, setJob] = useState(null);
   const [tasks, setTasks] = useState([]);
+  const [stages, setStages] = useState([]);
+  const [filteredStages, setFilteredStages] = useState([]);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [selectedButton, setSelectedButton] = useState("pre");
+  const [loading, setLoading] = useState(true); // New loading state
 
-  // Fetch job data
   useEffect(() => {
     const fetchJobData = async () => {
+      setLoading(true); // Start loading
       try {
         const response = await fetch(`http://localhost:5000/lambda/job/${jobId}`);
         const result = await response.json();
+        const tasksData = result?.data?.tasks || [];
         setJob(result?.data);
-        setTasks(result?.data?.tasks || []);
+        setTasks(tasksData);
+
+        // Default selection: First task and Pre Steps
+        if (tasksData.length > 0) {
+          const firstTaskId = tasksData[0].id;
+          setSelectedTaskId(firstTaskId);
+          fetchStages(firstTaskId);
+        }
+        filterStages("pre");
       } catch (error) {
         console.error("Error fetching job data:", error);
+      } finally {
+        setLoading(false); // End loading
       }
     };
 
     fetchJobData();
   }, [jobId]);
 
-  // Map OS to icons
   const getOSLogo = (os) => {
     switch (os) {
       case "win":
         return "🖥️";
       case "mac":
-        return "🍎"; 
+        return "🍎";
       case "ios":
         return "📱";
       case "linux":
-        return "🐧"; 
+        return "🐧";
       case "android":
-        return "🤖"; 
+        return "🤖";
       default:
         return "❓";
     }
+  };
+
+  const fetchStages = async (taskId) => {
+    setLoading(true); // Start loading
+    try {
+      setSelectedTaskId(taskId); // Highlight the selected task
+      const response = await fetch(`http://localhost:5000/lambda/stage/${taskId}`);
+      const result = await response.json();
+      setStages(result?.data || []);
+      setFilteredStages(result?.data || []); // Set all stages initially
+    } catch (error) {
+      console.error("Error fetching task stages:", error);
+    } finally {
+      setLoading(false); // End loading
+    }
+  };
+
+  const filterStages = (type) => {
+    setSelectedButton(type); // Highlight the selected button
+    let filtered;
+    switch (type) {
+      case "pre":
+        filtered = stages.filter((stage) =>
+          ["cache-download", "setup-runtime", "prerun", "test_discovery"].includes(stage.type)
+        );
+        break;
+      case "scenario":
+        filtered = stages.filter((stage) => stage.type === "scenario");
+        break;
+      case "post":
+        filtered = stages.filter((stage) =>
+          ["artefact", "cache-upload"].includes(stage.type)
+        );
+        break;
+      default:
+        filtered = stages;
+    }
+    setFilteredStages(filtered);
   };
 
   return (
@@ -47,7 +100,11 @@ const Testarea = ({ jobId, onClose }) => {
         </div>
         <div className="tasks">
           {tasks.map((task) => (
-            <div key={task.id} className="task_card">
+            <div
+              key={task.id}
+              className={`task_card ${selectedTaskId === task.id ? "selected_task" : ""}`}
+              onClick={() => fetchStages(task.id)}
+            >
               <div className="task_header">
                 <span className="group_number">#{task.groupNumber}</span>
                 <span className="os_logo">{getOSLogo(task.os)}</span>
@@ -59,8 +116,6 @@ const Testarea = ({ jobId, onClose }) => {
                   <span className="status-icon red">✕</span>
                 )}
               </div>
-              {/* <div className="task_remark">{task.remark}</div> */}
-              {/* {task.endTime-task.startTime} */}
             </div>
           ))}
         </div>
@@ -86,9 +141,44 @@ const Testarea = ({ jobId, onClose }) => {
 
         <div className="main_body">
           <div className="button_container">
-            <button className="steps">Pre Steps</button>
-            <button className="steps">Scenarios</button>
-            <button className="steps">Post Steps</button>
+            <button
+              className={`steps ${selectedButton === "pre" ? "selected_button" : ""}`}
+              onClick={() => filterStages("pre")}
+            >
+              Pre Steps
+            </button>
+            <button
+              className={`steps ${selectedButton === "scenario" ? "selected_button" : ""}`}
+              onClick={() => filterStages("scenario")}
+            >
+              Scenarios
+            </button>
+            <button
+              className={`steps ${selectedButton === "post" ? "selected_button" : ""}`}
+              onClick={() => filterStages("post")}
+            >
+              Post Steps
+            </button>
+          </div>
+
+          <div className="stage_list">
+            {loading ? (
+              <div>Loading...</div> 
+            ) : (
+              filteredStages.map((stage) => (
+                <div key={stage.id} className="stage_card">
+                  <p>
+                    <b>{stage.name}</b>
+                  </p>
+                  &nbsp;&nbsp;
+                  <p className="stage_tick_cross">
+          <span className={`status-icon ${stage.status === "completed" ? "green" : "red"}`}>
+            {stage.status === "completed" ? "✓" : "✕"}
+          </span>
+        </p>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

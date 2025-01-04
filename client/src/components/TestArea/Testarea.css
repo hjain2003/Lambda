@@ -52,21 +52,13 @@
     font-weight: bold;
   }
   
-  .status-icon.green {
-    background-color: green;
-    border: 2px solid green; /* Add circle border */
-  }
   
-  .status-icon.red {
-    background-color: red;
-    border: 2px solid red; /* Add circle border */
-  }
-
   .main_body{
     display: flex;
     flex-direction: column;
     /* border: 2px solid green; */
     height: 100%;
+    overflow-y: auto;
   }
   .button_container{
     margin-left: 10px;
@@ -91,6 +83,8 @@
     border: 1px solid #ddd;
     border-radius: 5px;
   }
+
+  
   
   .task_header {
     display: flex;
@@ -111,6 +105,31 @@
     margin-top: 5px;
   }
   
+  .selected_task {
+    background-color: #d9eafd;
+    border: 2px solid #007bff;
+  }
+  
+  .selected_button {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #0056b3;
+  }
+  
+  .stage_list{
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+    margin-top: 10px;
+    padding: 10px;
+  }
+  .stage_card{
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+  }
   .status-icon.green {
     color: green;
   }
@@ -118,5 +137,15 @@
   .status-icon.red {
     color: red;
   }
+
+  .status-icon.green {
+    background-color: green;
+    border: 2px solid green; /* Add circle border */
+    color: white;
+  }
   
-  
+  .status-icon.red {
+    background-color: red;
+    border: 2px solid red; /* Add circle border */
+    color: white;
+  }
