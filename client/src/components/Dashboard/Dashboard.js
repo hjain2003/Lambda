@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 import Navbar from "../Navbar/Navbar";
 import { FaSearch } from "react-icons/fa";
+import Testarea from "../TestArea/Testarea";
 
 const Dashboard = () => {
   const [dateRange, setDateRange] = useState({ from: "", to: "" });
   const [jobs, setJobs] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search input
-  const [loading, setLoading] = useState(false); // State for loading spinner
+  const [searchQuery, setSearchQuery] = useState(""); 
+  const [loading, setLoading] = useState(false); 
+  const [jobStatusBox, setJobStatusBox] = useState(false);
+  const [selectedJob, setSelectedJob] = useState(null); // State to store selected job details
 
   // Fetch jobs from the API
   useEffect(() => {
     const fetchJobs = async () => {
-      setLoading(true); // Start loading spinner
+      setLoading(true);
       try {
         const response = await fetch("http://localhost:5000/lambda/jobs");
         const result = await response.json();
@@ -20,7 +23,7 @@ const Dashboard = () => {
       } catch (error) {
         console.error("Error fetching jobs:", error);
       } finally {
-        setLoading(false); // Stop loading spinner
+        setLoading(false);
       }
     };
     fetchJobs();
@@ -30,6 +33,16 @@ const Dashboard = () => {
     setDateRange({ ...dateRange, [e.target.name]: e.target.value });
   };
 
+  const handleJobClick = (job) => {
+    setSelectedJob(job); // Store job details
+    setJobStatusBox(true); // Show Testarea
+  };
+
+  const handleCloseJobBox = () => {
+    setJobStatusBox(false); // Hide Testarea
+    setSelectedJob(null); // Clear selected job details
+  };
+
   const filteredJobs = jobs.filter((job) =>
     job.job_number.toString().includes(searchQuery.trim())
   );
@@ -37,6 +50,11 @@ const Dashboard = () => {
   return (
     <>
       <div className="main_div">
+        {jobStatusBox && (
+          <div className="job_status_box">
+            <Testarea jobId={selectedJob?.id} job={selectedJob} onClose={handleCloseJobBox} />
+          </div>
+        )}
         <Navbar />
         <br />
         <div className="search-filter-container">
@@ -47,7 +65,7 @@ const Dashboard = () => {
               placeholder="Search by Job ID"
               className="searchjob"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)} // Update search input
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           <div className="date-filter">
@@ -76,10 +94,14 @@ const Dashboard = () => {
 
         <div className="jobs-container">
           {loading ? (
-            <div className="loading-spinner"></div> // Display spinner when loading
+            <div className="loading-spinner"></div>
           ) : filteredJobs.length > 0 ? (
             filteredJobs.map((job) => (
-              <div key={job.id} className="job-card">
+              <div
+                key={job.id}
+                className="job-card"
+                onClick={() => handleJobClick(job)}
+              >
                 <div className="first_row">
                   {job.status === "completed" ? (
                     <div

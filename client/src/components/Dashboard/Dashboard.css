@@ -107,3 +107,18 @@
     }
   }
   
+  .job_status_box{
+    height: 400px;
+    width: 600px;
+    /* border-radius: 10px; */
+    color: black;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    z-index:1000;
+    display: flex;
+    flex-direction: row;
+  }

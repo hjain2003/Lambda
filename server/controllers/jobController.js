@@ -22,7 +22,7 @@ export const getJobList = async (req, res) => {
 };
 
 export const getJobStatus = async (req, res) => {
-    const { jobId } = req.params; // Extract jobId from the route parameter
+    const { jobId } = req.params; 
     try {
       const response = await axios.get(`https://api.hyperexecute.cloud/v2.0/job/${jobId}`, {
         headers: {
@@ -34,5 +34,21 @@ export const getJobStatus = async (req, res) => {
     } catch (error) {
       console.error(`Error fetching status for jobId ${jobId}:`, error);
       res.status(500).json({ error: `Failed to fetch status for jobId ${jobId}` });
+    }
+  };
+
+  export const getTaskStages = async (req, res) => {
+    const { taskId } = req.params; 
+    try {
+      const response = await axios.get(`https://api.hyperexecute.cloud/v2.0/stage/${taskId}`, {
+        headers: {
+          Authorization: `Basic ${auth}`,
+        },
+      });
+  
+      res.status(200).json(response.data);
+    } catch (error) {
+      console.error(`Error fetching stages for taskId ${taskId}:`, error);
+      res.status(500).json({ error: `Failed to fetch stages for taskId ${taskId}` });
     }
   };
