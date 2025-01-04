@@ -10,7 +10,7 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState(""); 
   const [loading, setLoading] = useState(false); 
   const [jobStatusBox, setJobStatusBox] = useState(false);
-  const [selectedJob, setSelectedJob] = useState(null); // State to store selected job details
+  const [selectedJob, setSelectedJob] = useState(null); 
 
   // Fetch jobs from the API
   useEffect(() => {
@@ -34,13 +34,13 @@ const Dashboard = () => {
   };
 
   const handleJobClick = (job) => {
-    setSelectedJob(job); // Store job details
-    setJobStatusBox(true); // Show Testarea
+    setSelectedJob(job); 
+    setJobStatusBox(true); 
   };
 
   const handleCloseJobBox = () => {
-    setJobStatusBox(false); // Hide Testarea
-    setSelectedJob(null); // Clear selected job details
+    setJobStatusBox(false); 
+    setSelectedJob(null); 
   };
 
   const filteredJobs = jobs.filter((job) =>

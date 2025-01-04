@@ -55,22 +55,22 @@ const Testarea = ({ jobId, onClose }) => {
   };
 
   const fetchStages = async (taskId) => {
-    setLoading(true); // Start loading
+    setLoading(true); 
     try {
-      setSelectedTaskId(taskId); // Highlight the selected task
+      setSelectedTaskId(taskId); 
       const response = await fetch(`http://localhost:5000/lambda/stage/${taskId}`);
       const result = await response.json();
       setStages(result?.data || []);
-      setFilteredStages(result?.data || []); // Set all stages initially
+      setFilteredStages(result?.data || []); 
     } catch (error) {
       console.error("Error fetching task stages:", error);
     } finally {
-      setLoading(false); // End loading
+      setLoading(false); 
     }
   };
 
   const filterStages = (type) => {
-    setSelectedButton(type); // Highlight the selected button
+    setSelectedButton(type); 
     let filtered;
     switch (type) {
       case "pre":

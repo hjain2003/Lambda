@@ -140,12 +140,12 @@
 
   .status-icon.green {
     background-color: green;
-    border: 2px solid green; /* Add circle border */
+    border: 2px solid green;
     color: white;
   }
   
   .status-icon.red {
     background-color: red;
-    border: 2px solid red; /* Add circle border */
+    border: 2px solid red; 
     color: white;
   }
