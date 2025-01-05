@@ -7,10 +7,11 @@ import Testarea from "../TestArea/Testarea";
 const Dashboard = () => {
   const [dateRange, setDateRange] = useState({ from: "", to: "" });
   const [jobs, setJobs] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); 
-  const [loading, setLoading] = useState(false); 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [downloading, setDownloading] = useState(false); // Added state for downloading
   const [jobStatusBox, setJobStatusBox] = useState(false);
-  const [selectedJob, setSelectedJob] = useState(null); 
+  const [selectedJob, setSelectedJob] = useState(null);
 
   // Fetch jobs from the API
   useEffect(() => {
@@ -34,18 +35,43 @@ const Dashboard = () => {
   };
 
   const handleJobClick = (job) => {
-    setSelectedJob(job); 
-    setJobStatusBox(true); 
+    setSelectedJob(job);
+    setJobStatusBox(true);
   };
 
   const handleCloseJobBox = () => {
-    setJobStatusBox(false); 
-    setSelectedJob(null); 
+    setJobStatusBox(false);
+    setSelectedJob(null);
   };
 
   const filteredJobs = jobs.filter((job) =>
     job.job_number.toString().includes(searchQuery.trim())
   );
+
+  const handleDownloadArtefact = async (jobId, job_number) => {
+    setDownloading(true); // Start downloading state
+    try {
+      const response = await fetch(`http://localhost:5000/lambda/download/${jobId}`);
+      if (!response.ok) {
+        throw new Error("Failed to download artefact");
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${job_number}_reports.zip`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading artefact:", error);
+    } finally {
+      setDownloading(false); // End downloading state
+    }
+  };
 
   return (
     <>
@@ -155,7 +181,15 @@ const Dashboard = () => {
                     <strong>[{new Date(job.created_at).toLocaleString()}]</strong>
                   </p>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button id="download_artefacts">Artefacts ↓</button>
+                  <button
+                    id="download_artefacts"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDownloadArtefact(job.id, job.job_number);
+                    }}
+                  >
+                    {downloading ? "Downloading..." : "Artefacts ↓"}
+                  </button>
                 </div>
                 <div className="second_row">
                   <p>
@@ -181,6 +215,8 @@ const Dashboard = () => {
             <p>No jobs found for the given criteria.</p>
           )}
         </div>
+
+        {downloading && <div className="loading-overlay">Downloading Artefact...</div>}
       </div>
     </>
   );
