@@ -9,11 +9,10 @@ const Dashboard = () => {
   const [jobs, setJobs] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [downloading, setDownloading] = useState(false); // Added state for downloading
+  const [downloading, setDownloading] = useState(false); 
   const [jobStatusBox, setJobStatusBox] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
-
-  // Fetch jobs from the API
+ 
   useEffect(() => {
     const fetchJobs = async () => {
       setLoading(true);
@@ -49,22 +48,19 @@ const Dashboard = () => {
     const fromDate = dateRange.from ? new Date(dateRange.from) : null;
     const toDate = dateRange.to ? new Date(dateRange.to) : null;
   
-    // Check if the job matches the search query
     const matchesSearchQuery = searchQuery
       ? job.job_number.toString().includes(searchQuery.trim())
       : true;
-  
-    // Check if the job falls within the date range
+ 
     const withinDateRange =
       (!fromDate || jobDate >= fromDate) && (!toDate || jobDate <= toDate);
-  
-    // Combine both conditions
+
     return matchesSearchQuery && withinDateRange;
   });
   
 
   const handleDownloadArtefact = async (jobId, job_number) => {
-    setDownloading(true); // Start downloading state
+    setDownloading(true);
     try {
       const response = await fetch(`http://localhost:5000/lambda/download/${jobId}`);
       if (!response.ok) {
@@ -84,7 +80,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error downloading artefact:", error);
     } finally {
-      setDownloading(false); // End downloading state
+      setDownloading(false);
     }
   };
 
