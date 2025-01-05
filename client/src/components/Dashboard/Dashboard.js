@@ -44,9 +44,24 @@ const Dashboard = () => {
     setSelectedJob(null);
   };
 
-  const filteredJobs = jobs.filter((job) =>
-    job.job_number.toString().includes(searchQuery.trim())
-  );
+  const filteredJobs = jobs.filter((job) => {
+    const jobDate = new Date(job.created_at);
+    const fromDate = dateRange.from ? new Date(dateRange.from) : null;
+    const toDate = dateRange.to ? new Date(dateRange.to) : null;
+  
+    // Check if the job matches the search query
+    const matchesSearchQuery = searchQuery
+      ? job.job_number.toString().includes(searchQuery.trim())
+      : true;
+  
+    // Check if the job falls within the date range
+    const withinDateRange =
+      (!fromDate || jobDate >= fromDate) && (!toDate || jobDate <= toDate);
+  
+    // Combine both conditions
+    return matchesSearchQuery && withinDateRange;
+  });
+  
 
   const handleDownloadArtefact = async (jobId, job_number) => {
     setDownloading(true); // Start downloading state
