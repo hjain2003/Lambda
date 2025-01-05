@@ -82,6 +82,22 @@
     font-size: 16px;
     color: #555;
 }
+#download_artefacts{
+  color: blue;
+  border: 1px solid blue;
+  border-radius: 20px;
+  padding: 5px;
+  cursor: pointer;
+  background-color: white;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#download_artefacts:hover{
+  background-color: #007bff;
+  color: white;
+}
 
 .second_row,.first_row{
     display: flex;

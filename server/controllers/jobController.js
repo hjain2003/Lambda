@@ -52,3 +52,26 @@ export const getJobStatus = async (req, res) => {
       res.status(500).json({ error: `Failed to fetch stages for taskId ${taskId}` });
     }
   };
+
+  export const downloadArtifact = async (req, res) => {
+    const { jobId } = req.params;
+  
+    try {
+      const response = await axios({
+        url: `https://api.hyperexecute.cloud/v2.0/artefacts/${jobId}/download?name=reports`,
+        method: 'GET',
+        responseType: 'stream',
+        headers: {
+          Authorization: `Basic ${auth}`,
+        },
+      });
+
+      res.setHeader('Content-Disposition', 'attachment; filename=reports.zip');
+      res.setHeader('Content-Type', 'application/zip');
+
+      response.data.pipe(res);
+    } catch (error) {
+      console.error(`Error downloading artifact for jobId ${jobId}:`, error);
+      res.status(500).json({ error: `Failed to download artifact for jobId ${jobId}` });
+    }
+  };

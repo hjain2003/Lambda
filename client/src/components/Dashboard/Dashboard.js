@@ -154,6 +154,8 @@ const Dashboard = () => {
                     &nbsp;&nbsp;
                     <strong>[{new Date(job.created_at).toLocaleString()}]</strong>
                   </p>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button id="download_artefacts">Artefacts ↓</button>
                 </div>
                 <div className="second_row">
                   <p>
