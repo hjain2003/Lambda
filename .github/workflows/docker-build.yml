@@ -3,10 +3,10 @@ name: Build Docker Image
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build:
@@ -24,16 +24,16 @@ jobs:
 
       - name: Build Docker Image for Server
         run: |
-          docker build -f server/Dockerfile -t hjain2003/lambdaserver .
+          docker build -f server/Dockerfile -t hjain2003/lambdaserver:latest .
 
       - name: Push Docker Image for Server
         run: |
-          docker push hjain2003/lambdaserver
+          docker push hjain2003/lambdaserver:latest
 
       - name: Build Docker Image for Client
         run: |
-          docker build -f client/Dockerfile -t hjain2003/lambdaclient .
+          docker build -f client/Dockerfile -t hjain2003/lambdaclient:latest .
 
       - name: Push Docker Image for Client
         run: |
-          docker push hjain2003/lambdaclient
+          docker push hjain2003/lambdaclient:latest
