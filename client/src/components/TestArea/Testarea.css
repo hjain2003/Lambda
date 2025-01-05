@@ -44,8 +44,8 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 20px; /* Adjust size as needed */
-    height: 20px; /* Adjust size as needed */
+    width: 20px; 
+    height: 20px; 
     border-radius: 50%;
     font-size: 14px; /* Adjust text size as needed */
     color: white;

@@ -28,7 +28,7 @@ jobs:
 
       - name: Push Docker Image for Server
         run: |
-          docker push hjain2003/lamdaserver
+          docker push hjain2003/lambdaserver
 
       - name: Build Docker Image for Client
         run: |
