@@ -1,0 +1,111 @@
+.summary_big_div {
+    height: 100vh;
+    width: 94%;
+}
+
+.summary_container {
+    padding: 20px;
+    display: flex;
+    width: 100%;
+    margin-left: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.summary_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);  /* 4 cards per row */
+    gap: 20px;
+    width: 100%;
+}
+
+.summary_card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+    border: 2px solid #ddd;
+    text-align: center;
+    position: relative;
+}
+
+.job_number {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.pie_chart_container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+.progress_bar {
+    margin: 15px 0;
+}
+
+.progress_label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.progress_bar_container {
+    background-color: #e0e0e0;
+    height: 10px;
+    width: 100%;
+    border-radius: 5px;
+    position: relative;
+}
+
+.progress_bar_filled {
+    height: 100%;
+    border-radius: 5px;
+    position: absolute;
+    top: 0;
+}
+
+.failed {
+    background-color: red !important;
+}
+
+.progress_percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+}
+.progress_bar_container {
+  background-color: #e0e0e0;
+  height: 30px; /* Adjust height as needed */
+  width: 100%;
+  border-radius: 5px;
+  position: relative;
+}
+
+.progress_bar_filled {
+  height: 100%;
+  border-radius: 5px;
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px; /* Adjust text size */
+  color: white;
+}
+
+
+.progress_bar_text {
+  position: absolute;
+  color: white;
+  font-size: 12px; /* Adjust font size */
+  font-weight: bold;
+  z-index: 2;
+}

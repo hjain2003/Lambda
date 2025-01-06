@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 import Navbar from "../Navbar/Navbar";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch , FaExternalLinkAlt} from "react-icons/fa";
 import Testarea from "../TestArea/Testarea";
+import { useNavigate } from 'react-router-dom';
+
 
 const Dashboard = () => {
   const [dateRange, setDateRange] = useState({ from: "", to: "" });
@@ -12,6 +14,7 @@ const Dashboard = () => {
   const [downloading, setDownloading] = useState(false); 
   const [jobStatusBox, setJobStatusBox] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
+  const navigate = useNavigate();
  
   useEffect(() => {
     const fetchJobs = async () => {
@@ -84,6 +87,9 @@ const Dashboard = () => {
     }
   };
 
+  const navigateToSummary=()=>{
+    navigate('/summary');
+  }
   return (
     <>
       <div className="main_div">
@@ -127,6 +133,7 @@ const Dashboard = () => {
               />
             </label>
           </div>
+          <button id="navigateToSummarize" onClick={navigateToSummary}>Summarize <FaExternalLinkAlt style={{ marginLeft: '8px',marginTop:'-200px' }}/></button>
         </div>
 
         <div className="jobs-container">
