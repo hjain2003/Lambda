@@ -1,4 +1,11 @@
 services:
+  server:
+    image: hjain2003/lambdaserver:latest
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+
   client:
     image: hjain2003/lambdaclient:latest
     ports:
@@ -6,9 +13,4 @@ services:
     environment:
       - NODE_ENV=production
 
-  server:
-    image: hjain2003/lambdaserver:latest
-    ports:
-      - "5000:5000"
-    environment:
-      - NODE_ENV=production
+  
